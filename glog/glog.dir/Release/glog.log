@@ -1,0 +1,18 @@
+﻿  Building Custom Rule E:/githubfile/myproject/glog/CMakeLists.txt
+  CMake does not need to re-run because E:/githubfile/myproject/glog/bin/CMakeFiles/generate.stamp is up-to-date.
+  demangle.cc
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(1544): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(3190): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+  logging.cc
+  raw_logging.cc
+  symbolize.cc
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(1544): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(3190): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+  utilities.cc
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\DbgHelp.h(1544): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+C:\Program Files (x86)\Windows Kits\8.1\Include\um\DbgHelp.h(3190): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+  vlog_is_on.cc
+  signalhandler.cc
+  正在生成代码...
+  port.cc
+  glog.vcxproj -> E:\githubfile\myproject\glog\bin\Release\glog.lib
