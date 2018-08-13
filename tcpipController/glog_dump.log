@@ -1,0 +1,6 @@
+*** Aborted at 1533809040 (unix time) try "date -d @1533809040" if you are using GNU date ***
+    @ 0x6b78322b _seh_filter_exe
+    @   0x971df4 (unknown)
+    @ 0x7663336a BaseThreadInitThunk
+    @ 0x77dc9902 RtlInitializeExceptionChain
+    @ 0x77dc98d5 RtlInitializeExceptionChain

@@ -1,0 +1,4 @@
+Log file created at: 2018/08/10 16:05:40
+Running on machine: SG5VUH0OEHR7QNI
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+2018/08/10 16:05:40 166168 gloghelper.cpp:22] *** Aborted at 1533888339 (unix time) try "date -d @1533888339" if you are using GNU date ***
