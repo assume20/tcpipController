@@ -61,30 +61,18 @@ const std::string EvtStr300 = "使用挂失卡，刷卡无效";
 
 //extern Date_t getNewDate(Date_t initDate, int diffDays);
 extern QMutex g_eventMutex;
-extern QMutex g_timeMutex;
+//extern QMutex g_timeMutex;
 extern QMutex g_databaseInit;
-extern QMutex g_createDataMutex;
-extern QMutex g_preCardDoorAddrMutex;
-extern QMutex g_sucFileMutex;
+//extern QMutex g_createDataMutex;
+//extern QMutex g_preCardDoorAddrMutex;
+//extern QMutex g_sucFileMutex;
 
-extern 	QMap<QString, int> g_preCardDooraddrMap;
+//extern 	QMap<QString, int> g_preCardDooraddrMap;
 
 //尝试锁时间
 extern int g_TRYLOCKTIME;
 
-extern QFile g_sucFile;
 
 
+extern QVector<QPair<QString, int>> g_controlInfoVec;
 
-//class ipdoor
-//{
-//public:
-//	qdatetime datatime;
-//
-//	qstring cardnumstr;
-//
-//	int ndooraddr;
-//};
-
-
-//extern QMap<QString, QVector<IPdoor>> g_ipDoorMap;

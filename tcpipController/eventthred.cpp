@@ -1,7 +1,5 @@
 #include "eventthred.h"
 #include "global.h"
-#include "sdkcontrol.h"
-#include <sstream>
 #include <QSqlQuery>
 #include <QDateTime>
 #include <QVariant>
@@ -11,6 +9,7 @@
 #include <QTextCodec>
 #include <QFile>
 #include "glog/logging.h"
+#include "MiniDump.h"
 
 typedef int (__stdcall *pGethisevent)(int serverport, char *clientip, uint8 dcuid, HBagEvt Bagevt, HISEVTLIST *gevtlist, int delay);
 typedef  int (__stdcall *pGetnameAndVer)(int serverport, char *clientip, uint8 dcuid,
@@ -18,18 +17,20 @@ typedef  int (__stdcall *pGetnameAndVer)(int serverport, char *clientip, uint8 d
 
 typedef int (__stdcall *pSetdatetime)(int serverport, char *clientip, uint8 dcuid, uint16 date, uint16 time, int delay);
 
-//QMutex EVentthred::s_sqlMutex;
-EVentthred::EVentthred(QObject *parent, QString ip, int addr)
-    : QThread(parent),
-      m_clientip(ip),
-      m_addr(addr),
-      m_setTimeIsValid(false)
+EVentthred::EVentthred()    
 {
 
-    connect(this, SIGNAL(editTextUiSig(QString)),
-            parent, SLOT(textEditUiSlot(QString)));
+	m_bIsRunning = true;
 
     evtStrInit();
+
+	for (int i = 0; i < g_controlInfoVec.size(); ++i)
+	{
+		QString client = g_controlInfoVec.at(i).first;
+		memset(&m_BagevtMap[client], 0, sizeof(m_BagevtMap[client]));
+		memset(&m_gevtlistMap[client], 0, sizeof(m_gevtlistMap[client]));
+	}
+
     memset(&Bagevt, 0, sizeof(Bagevt));
     memset(&gevtlist, 0, sizeof(gevtlist));
 
@@ -37,7 +38,7 @@ EVentthred::EVentthred(QObject *parent, QString ip, int addr)
     m_myDll = new QLibrary("drrs.dll");
     if(!m_myDll->load())
     {
-        emit editTextUiSig(QString::fromLocal8Bit("load dll fail!"));
+        LOG(ERROR) << "load dll fail!";
     }
 
     databaseInit();
@@ -50,12 +51,13 @@ EVentthred::EVentthred(QObject *parent, QString ip, int addr)
 
 EVentthred::~EVentthred()
 {
-	//m_pDataBase->close();
-	//delete m_pDataBase;
-	//m_pDataBase->removeDatabase(m_clientip);
+
 	delete m_myDll;
 	mysql_close(m_pConn);
-    terminate();
+
+	m_bIsRunning = false;
+	this->quit();
+	this->wait(300);
 }
 
 void EVentthred::databaseInit()
@@ -68,7 +70,7 @@ void EVentthred::databaseInit()
     QByteArray hostName = fd.value("config/servername", "0").toByteArray();
 	QByteArray database = fd.value("config/database", "0").toByteArray();
 	QByteArray userName = fd.value("config/username", "0").toByteArray();
-	//qDebug() << userName;
+
 	QByteArray password = fd.value("config/password", "0").toByteArray();
 
 	g_databaseInit.lock();
@@ -76,54 +78,24 @@ void EVentthred::databaseInit()
 
 	//第2、3、4、5参数的意思分别是：服务器地址、用户名、密码、数据库名，第6个为mysql端口号（0为默认值3306）
 
+
+	//if (!mysql_real_connect(m_pConn, "10.43.72.223", "root"
+	//	, "Liu***1016", "patrol", 0, NULL, 0))
 	if (!mysql_real_connect(m_pConn, hostName.constData(), userName.constData()
-											,password.constData(), database.constData(), 0, NULL, 0))
+		, password.constData(), database.constData(), 0, NULL, 0))
 	{
-		emit editTextUiSig(QString::fromLocal8Bit("无法连接数据库:%1").arg(mysql_error(m_pConn)));
+		std::cout << m_clientip.toStdString() << "无法连接数据库!\n" ;
 	}
 	else
 	{
-		emit editTextUiSig(QString::fromLocal8Bit("%1连接数据库成功").arg((m_clientip)));
+		std::cout << m_clientip.toStdString() << "连接数据库成功!\n";
 	}
 
 	char value = 1;
 	mysql_options(m_pConn, MYSQL_OPT_RECONNECT, (char *)&value);
 	g_databaseInit.unlock();
-	mysql_query(m_pConn, "set names gbk");//防止乱码。设置和数据库的编码一致就不会乱码
+	mysql_query(m_pConn, "set names utf8");//防止乱码。设置和数据库的编码一致就不会乱码
 
-
-
-#if 0
-    /*sql server配置方式*/
-    m_pDataBase->setDatabaseName(QString("DRIVER={SQL SERVER};"
-                                       "SERVER=%1;"
-                                       "DATABASE=%2;"
-                                       "UID=%3;"
-                                       "PWD=%4;")
-                               .arg(hostName)
-                               .arg(database)
-                               .arg(userName)
-                               .arg(password));
-#endif
-
-#if 0
-	m_pDataBase = new QSqlDatabase();
-	*m_pDataBase = QSqlDatabase::addDatabase("QMYSQL", m_clientip);
-	//m_pDataBase = &m_dataBase;
-    m_pDataBase->setHostName(hostName);
-    m_pDataBase->setDatabaseName(database);
-    m_pDataBase->setUserName(userName);
-    m_pDataBase->setPassword(password);
-	m_pDataBase->setConnectOptions("MYSQL_OPT_RECONNECT=1;");
-    if (m_pDataBase->open())
-    {
-        emit editTextUiSig(QString::fromLocal8Bit("%1数据库连接成功!").arg(m_clientip));
-    }
-    else
-    {
-        emit editTextUiSig(QString::fromLocal8Bit("%1数据库连接失败!").arg(m_clientip));
-    }
-#endif
 }
 
 
@@ -183,41 +155,8 @@ void EVentthred::evtStrInit()
 void EVentthred::updateControlTime()
 {
 	//设置时间标志
-	m_setTimeIsValid = false;
-	LOG(INFO) << "enter set time The timer succeed!";
-#if 0
-
-	if (g_sucFileMutex.tryLock(g_TRYLOCKTIME))
-	{
-		if (g_sucFile.isOpen())
-		{
-			//定时关闭一次
-			g_sucFile.close();
-			g_sucFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-		}
-
-		//>200M时清楚文件内容
-		if (g_sucFile.size() > 1024 * 1024 * 200)
-		{
-			g_sucFile.close();
-			g_sucFile.open(QFile::WriteOnly | QFile::Truncate);
-		}
-		g_sucFile.close();
-		g_sucFileMutex.unlock();
-
-	}
-
-	QFile errFile("sqlerrrecord.txt");
-	errFile.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
-	if (errFile.size() > 1024 * 1024 * 200)
-	{
-		errFile.close();
-		errFile.open(QFile::WriteOnly | QFile::Truncate);
-	}
-	errFile.close();
-
-#endif
-	
+	m_setTimeIsValidMap.clear();
+	LOG(INFO) << "clear m_setTimeIsValidMap successfully!";
 }
 
 
@@ -226,7 +165,7 @@ bool EVentthred::sdkSetTime(QString ip, int addr)
     pSetdatetime Setdatetime=(pSetdatetime)m_myDll->resolve("t_setdatetime");    //援引 add() 函数
     if (Setdatetime == NULL)
     {
-        emit editTextUiSig("load t_setdatetime address fail!");
+		LOG(ERROR) << "load t_setdatetime address fail!";
         return false;
     }
     QDateTime startDateTime(QDate(2000, 1, 1));
@@ -242,13 +181,14 @@ bool EVentthred::sdkSetTime(QString ip, int addr)
     int err = Setdatetime(49164, clientip.data(), addr, wdate, wtime, 300);
     if (err == 0)
     {
-        emit editTextUiSig(QString::fromLocal8Bit("%1设置控制器时间成功！").arg(ip));
-        emit editTextUiSig(QString::fromLocal8Bit("当前时间：%1").arg(currentDateTime.toString("yyyy-MM-dd hh:mm:ss")));
+		std::cout << ip.toStdString() << "设置控制器时间成功！\n";
+        LOG(INFO) << ip.toStdString() <<"设置控制器时间成功！";
         return true;
     }
     else
     {
-        emit editTextUiSig(QString::fromLocal8Bit("%1设置控制器时间失败！错误码：%2").arg(ip).arg(err));
+		std::cout << ip.toStdString() << "设置控制器时间失败！\n";
+		LOG(INFO) << ip.toStdString() << "设置控制器时间失败！";
         return false;
     }
 
@@ -259,185 +199,174 @@ bool EVentthred::sdkSetTime(QString ip, int addr)
 //在run中调用其他函数也在新线程中
 void EVentthred::collectCardData()
 {
+
 	int err;
-#if 1
-	if (!m_setTimeIsValid)
+	for (int i = 0; i < g_controlInfoVec.size(); ++i)
 	{
-		//初始化设置时间  直至成功
-		//m_setTimeIsValid = sdkSetTime(m_clientip, m_addr);
-	}
-	//当天中午12点重新设置时间 并且情况前次点地址集合
+		m_clientip = g_controlInfoVec.at(i).first;
+		m_addr = g_controlInfoVec.at(i).second;
 
-	if (QTime::currentTime().hour() == 12 && QTime::currentTime().minute() < 1)
-	{
-		if (g_preCardDoorAddrMutex.tryLock(g_TRYLOCKTIME))
+		if (!m_setTimeIsValidMap[m_clientip])
 		{
-			g_preCardDooraddrMap.clear();
+			//初始化设置时间  直至成功
+			m_setTimeIsValidMap[m_clientip] = sdkSetTime(m_clientip, m_addr);
+
+		}
+		//当天中午12点重新设置时间 并且情况前次点地址集合
+
+		if (QTime::currentTime().hour() == 12 && QTime::currentTime().minute() < 1)
+		{
+
+			m_preCardDooraddrMap.clear();
 			LOG(INFO) << "clear precarddooraddrmap!";
-			g_preCardDoorAddrMutex.unlock();
-		}
-	}
 
-	QByteArray byteIp = m_clientip.toLatin1();
-
-	if (g_eventMutex.tryLock(g_TRYLOCKTIME))
-	{
-		//err = Gethisevent(49164, byteIp.data(), m_addr, Bagevt, &gevtlist, 600);
-		g_eventMutex.unlock();
-	}
-	QString currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
-
-	err = 1;
-	if (err == 1)
-	{
-		//覆盖之前的记录
-		Bagevt.EvtNum = gevtlist.EvtNum;
-		Bagevt.BagID = gevtlist.BagID;
-
-
-		if (mysql_ping(m_pConn))
-		{
-
-
-
-			//continue;
 		}
 
-		//有记录
-		emit editTextUiSig(QString::fromLocal8Bit("%1取记录成功！取到记录数：%2").arg(m_clientip)
-			.arg((int)gevtlist.EvtNum));
-		emit editTextUiSig(QString::fromLocal8Bit("当前时间：") + currentDateTime);
+		QByteArray byteIp = m_clientip.toLatin1();
 
-		/************************************************************************/
-		gevtlist.EvtNum = 2;
 
-		for (int i = 0; i < gevtlist.EvtNum; i++)
+		err = Gethisevent(49164, byteIp.data(), m_addr, 
+					m_BagevtMap[m_clientip], &(m_gevtlistMap[m_clientip]), 250);
+
+		currentDateTime = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+
+
+		if (err == 1)
 		{
-			int hour = (int)(gevtlist.Evt[i].Time / 1800);
-			int wtime = (int)(gevtlist.Evt[i].Time % 1800);
-			int minute = (int)(wtime / 30);
-			int second = (int)((wtime % 30) << 1);
-			QDateTime datetime(QDate(2000, 1, 1), QTime(hour, minute, second));
-			datetime = datetime.addDays(gevtlist.Evt[i].Date);
+			gevtlist = m_gevtlistMap.value(m_clientip);
+			//覆盖之前的记录
+			m_BagevtMap[m_clientip].EvtNum = gevtlist.EvtNum;
+			m_BagevtMap[m_clientip].BagID = gevtlist.BagID;
 
-			std::stringstream stream;
 
-			QString cardNumStr = QString("%1-%2").arg(gevtlist.Evt[i].CardZone).arg(gevtlist.Evt[i].CardId);
-			int nDoorAddr = (int)gevtlist.Evt[i].DotId;
+			//有记录
+			std::cout << m_clientip.toStdString() << "取记录成功！取到记录数：" << (int)gevtlist.EvtNum << '\n';
+			LOG(INFO) << m_clientip.toStdString() << "取记录成功！取到记录数：" << (int)gevtlist.EvtNum << '\n';
+			std::cout << "当前时间：" << currentDateTime.toStdString() << '\n';
 
-			QByteArray  str = datetime.toString(Qt::SystemLocaleLongDate).toLocal8Bit();
-			std::string timeStr(str.data());
-			stream << "时间：" << timeStr
-				<< "，点地址：" << nDoorAddr
-				<< "，卡号：" << cardNumStr.toStdString()
-				<< "，事件：" << EvtStr[gevtlist.Evt[i].Code]
-				<< "\n";
-			std::string hiseventInfo;
-			getline(stream, hiseventInfo);
-			emit editTextUiSig(QString::fromLocal8Bit(hiseventInfo.c_str()));
+			/************************************************************************/
 
-			bool isUnSamePreCardDoor = false;
-
-			if (g_preCardDoorAddrMutex.tryLock(g_TRYLOCKTIME))
+			for (int i = 0; i < gevtlist.EvtNum; i++)
 			{
-				if (gevtlist.Evt[i].Code == 0x21 && g_preCardDooraddrMap[cardNumStr] != nDoorAddr)
+				int hour = (int)(gevtlist.Evt[i].Time / 1800);
+				int wtime = (int)(gevtlist.Evt[i].Time % 1800);
+				int minute = (int)(wtime / 30);
+				int second = (int)((wtime % 30) << 1);
+				QDateTime datetime(QDate(2000, 1, 1), QTime(hour, minute, second));
+				datetime = datetime.addDays(gevtlist.Evt[i].Date);
+
+				m_clockInDataStream.clear();
+				m_clockInDataStream.str("");
+
+				QString cardNumStr = QString("%1-%2").arg(gevtlist.Evt[i].CardZone).arg(gevtlist.Evt[i].CardId);
+				int nDoorAddr = (int)gevtlist.Evt[i].DotId;
+				
+				QByteArray  str = datetime.toString(Qt::SystemLocaleLongDate).toLocal8Bit();
+				std::string timeStr(str.data());
+			
+				std::string hiseventInfo;
+				/*同一卡同一门连续打卡会被过滤*/
+				if (gevtlist.Evt[i].Code == 0x21 && m_preCardDooraddrMap[cardNumStr] != nDoorAddr)
 				{
-					isUnSamePreCardDoor = true;
 
-				}
-				g_preCardDoorAddrMutex.unlock();
-			}
+					m_preCardDooraddrMap[cardNumStr] = nDoorAddr;
 
 
-			/*同一卡同一门连续打卡会被过滤*/
-			//if (gevtlist.Evt[i].Code == 0x21 && isUnSamePreCardDoor)
-			{
-				if (g_preCardDoorAddrMutex.tryLock(g_TRYLOCKTIME))
-				{
-					g_preCardDooraddrMap[cardNumStr] = nDoorAddr;
-					g_preCardDoorAddrMutex.unlock();
-				}
-				//m_preDateTime[cardNumStr][nDoorAddr] = datetime;
+					m_clockInDataStream << "时间：" << timeStr
+						<< "，点地址：" << nDoorAddr
+						<< "，卡号：" << cardNumStr.toStdString()
+						<< "\n";
+					getline(m_clockInDataStream, hiseventInfo);
+					std::cout << hiseventInfo << '\n';
+					LOG(INFO) << hiseventInfo;
 
 
-				/*当天中午12点 到 第二天中午 12点属于当天*/
-				QDate curDate(datetime.date());
-				if (hour < 12)
-				{
-					curDate = curDate.addDays(-1);
-				}
+					/*当天中午12点 到 第二天中午 12点属于当天*/
+					QDate curDate(datetime.date());
+					if (hour < 12)
+					{
+						curDate = curDate.addDays(-1);
+					}
 
-				QString queryString = QString("INSERT INTO eventinfos (task_date, eventtime, ip, dooraddr, card, flag)"
-					"VALUES ('%1', '%2', '%3', %4, '%5', %6)")
-					.arg(curDate.toString("yyyy-MM-dd"))
-					.arg(datetime.toString("yyyy-MM-dd HH:mm:ss"))
-					.arg(m_clientip)
-					.arg(nDoorAddr)
-					.arg(cardNumStr)
-					.arg(0);
-				QByteArray queryByteArray = queryString.toLocal8Bit();
-				int ok = 0;
-				ok = mysql_query(m_pConn, queryByteArray.data());
+					QString queryString = QString("INSERT INTO eventinfos (task_date, eventtime, ip, dooraddr, card, flag)"
+						"VALUES ('%1', '%2', '%3', %4, '%5', %6)")
+						.arg(curDate.toString("yyyy-MM-dd"))
+						.arg(datetime.toString("yyyy-MM-dd HH:mm:ss"))
+						.arg(m_clientip)
+						.arg(nDoorAddr)
+						.arg(cardNumStr)
+						.arg(0);
+					QByteArray queryByteArray = queryString.toLocal8Bit();
+					int ok = 0;
+					ok = mysql_query(m_pConn, queryByteArray.data());
 
-				if (ok)
-				{
-					/*
-					*数据库插入失败时
-					*/
-					std::stringstream warningStream;
-					std::string warringStr1, warringStr2;
+					if (ok)
+					{
+						/*
+						*数据库插入失败时
+						*/
+						m_errorStream.clear();
+						m_errorStream.str("");
+						std::string warringStr1, warringStr2;
+						
 
+						m_errorStream << m_clientip.toStdString() << " " << hiseventInfo;
+						getline(m_errorStream, warringStr1);
 
-					warningStream << m_clientip.toStdString() << " " << QString::fromLocal8Bit(hiseventInfo.c_str()).toStdString();
-					getline(warningStream, warringStr1);
+						warringStr2 = mysql_error(m_pConn);
+						getline(m_errorStream, warringStr2);
+						warringStr1 += '\n';
+						warringStr1 += warringStr2;
+						LOG(ERROR) << warringStr1;
 
-					//qDebug() << QString::fromLocal8Bit(mysql_error(m_pConn));
-					warringStr2 = QString::fromLocal8Bit(mysql_error(m_pConn)).toStdString();
-					getline(warningStream, warringStr2);
+						/*
+						* 该重连数据库效果 比自连的更好 
+						*/
+						mysql_close(m_pConn);
+						mysql_library_end();
+						msleep(100);
+						databaseInit();
 
-					//qDebug() << QString(warringStr2.data());
-
-					warringStr1 += '\n';
-					warringStr1 += warringStr2;
-					LOG(ERROR) << warringStr1;
+					}
 				}
 				else
 				{
-					std::stringstream okStream;
-
-					okStream << m_clientip.toStdString() << " "
-						<< QString::fromLocal8Bit(hiseventInfo.c_str()).toStdString()
-						<< '\n';
-					std::string okStr;
-					getline(okStream, okStr);
-					LOG(INFO) << okStr;
+					m_clockInDataStream << "时间：" << timeStr
+						<< "，点地址：" << nDoorAddr
+						<< "，事件：" << EvtStr[gevtlist.Evt[i].Code]
+						<< "\n";
+					getline(m_clockInDataStream, hiseventInfo);
+					std::cout << hiseventInfo << '\n';
+					LOG(INFO) << hiseventInfo;
 				}
 			}
+		}//end if(err == 1)
+		else if (err == 0)
+		{
+			//无记录
+			m_BagevtMap[m_clientip].EvtNum = 0;
+			m_BagevtMap[m_clientip].BagID = 0;
 		}
-	}//end if(err == 1)
-	else if (err == 0)
-	{
-		//无记录
 
-		Bagevt.EvtNum = 0;
-		Bagevt.BagID = 0;
-	}
-	QThread::msleep(400);
-#endif
-	
+
+
+	}	
 }
+
+
 
 void EVentthred::tryExceptCall()
 {
 
-	//__try
+	__try
 	{
 		collectCardData();
 	}
-	//__except (EXCEPTION_EXECUTE_HANDLER)
+	__except (MiniDumper::gpDumper->Handler(GetExceptionInformation()))
 	{
-		//qApp->exit(777);
-		//msleep(5000);
+		msleep(10000);
+		qApp->exit(777);
+	
 	}
 }
 
@@ -447,15 +376,15 @@ void EVentthred::run()
     Gethisevent = (pGethisevent)m_myDll->resolve("t_gethisevent");
     if (Gethisevent == NULL)
     {
-        emit editTextUiSig("load t_gethisevent address fail!");
+         LOG(INFO) << "load t_gethisevent address fail!";
         return;
     }
 
-	while (1)
+	while (m_bIsRunning)
 	{
+
 		//捕获到异常时重启应用
 		tryExceptCall();
-
     }// end for(;;)
 }
 

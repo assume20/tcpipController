@@ -236,6 +236,30 @@ int32 GetMainThreadPid() {
   return g_main_thread_pid;
 }
 
+
+/*
+* add by li
+*加入每天12:00自动生成文件
+*2018.8.9
+*/
+static int32 g_main_day = 0;
+
+bool DayHasChanged()
+{
+
+	time_t raw_time;
+	struct tm*tm_info;
+	time(&raw_time);
+	tm_info = localtime(&raw_time);
+	if (tm_info->tm_mday != g_main_day && tm_info->tm_hour > 12)
+	{
+		g_main_day = tm_info->tm_mday;
+		return true;
+	}
+	return false;
+}
+
+
 bool PidHasChanged() {
   int32 pid = getpid();
   if (g_main_thread_pid == pid) {

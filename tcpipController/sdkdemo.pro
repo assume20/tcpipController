@@ -7,6 +7,10 @@ TARGET = doorcontrol
 INCLUDEPATH += .
 QT += widgets core sql
 
+QT -= gui
+
+CONFIG += console
+
 # Input
 SOURCES += main.cpp \
     sdkcontrol.cpp \
@@ -27,7 +31,7 @@ FORMS += sdkcontrol.ui
 
 DEFINES += GOOGLE_GLOG_DLL_DECL= GLOG_NO_ABBREVIATED_SEVERITIES
 
-INCLUDEPATH += include
+INCLUDEPATH += ./include
 
 INCLUDEPATH += ../glog/src/windows
 

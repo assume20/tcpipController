@@ -25,10 +25,11 @@ class MiniDumper
 {
 public:
 	MiniDumper(bool headless);
+	static MiniDumper *gpDumper;
+	static LONG WINAPI Handler(struct _EXCEPTION_POINTERS *pExceptionInfo);
 
 protected:
-	static MiniDumper *gpDumper;
-	static LONG WINAPI Handler( struct _EXCEPTION_POINTERS *pExceptionInfo );
+
 
 	virtual void VSetDumpFileName(void);
 	virtual MINIDUMP_USER_STREAM_INFORMATION *VGetUserStreamArray() { return NULL; }

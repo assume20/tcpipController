@@ -9,6 +9,8 @@
 #include "drrs.h"
 #include "QTimer"
 #include <mysql.h>
+#include <sstream>
+
 
 typedef int (__stdcall *pGethisevent)(int serverport, char *clientip, uint8 dcuid, HBagEvt Bagevt, HISEVTLIST *gevtlist, int delay);
 
@@ -18,7 +20,7 @@ class EVentthred: public QThread
 {
     Q_OBJECT
 public:
-    EVentthred(QObject *parent,QString ip, int addr);
+    EVentthred();
 
     ~EVentthred();
 
@@ -40,8 +42,6 @@ private:
 
 	void tryExceptCall();
 
-signals:
-    void editTextUiSig(QString text);
 
 public slots:
 	void updateControlTime();
@@ -50,33 +50,24 @@ public slots:
 
 private:
 
-	//static QMutex s_sqlMutex;
-
     QLibrary *m_myDll;
 
-	//QMap<QString, int> m_preCardDooraddrMap;
-
-    QMap<QString, QMap<int, QDateTime>> m_preDateTime;
-
-    //QString m_prevIdStr;
-
-	//int m_prevDoorAddr;
-
-
-    QDateTime m_prevTime;
 
     std::string EvtStr[512];
 
-    const int m_addr;
-    const QString m_clientip;
+    int m_addr;
+    QString m_clientip;
 
     HBagEvt Bagevt;
     HISEVTLIST gevtlist;
 
-    bool m_setTimeIsValid;
 
-	bool m_bPrevIsSuc;
+	QMap<QString, HBagEvt> m_BagevtMap;
 
+	QMap<QString, HISEVTLIST> m_gevtlistMap;
+
+	//是否设置时间
+    QMap<QString, bool>  m_setTimeIsValidMap;
 
 	QTimer *m_timer;
 
@@ -88,7 +79,17 @@ private:
 
 	pGethisevent Gethisevent;
 
+	QString currentDateTime;
 
+	QMap<QString, int> m_preCardDooraddrMap;
+
+	//插入错误时 日志流
+	std::stringstream m_errorStream;
+	//打卡数据流
+	std::stringstream m_clockInDataStream;
+
+	//线程运行循环标志
+	bool m_bIsRunning;
 
 };
 

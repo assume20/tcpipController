@@ -1,10 +1,11 @@
 #ifndef SDKCONTROL_H
 #define SDKCONTROL_H
-#include <QWidget>
+#include <QObject>
 #include "drrs.h"
-#include<QSqlDatabase>
+#include <QSqlDatabase>
 #include <QDateTime>
 #include <QMap>
+#include <QVector>
 
 typedef  int (__stdcall *pGetnameAndVer)(int serverport, char *clientip, uint8 dcuid,
                                          tempdatatbl* tdata, uint8* dcuname, uint8* version, int delay);
@@ -13,17 +14,14 @@ typedef  int (__stdcall *pGetnameAndVer)(int serverport, char *clientip, uint8 d
 typedef int (__stdcall *pSetdatetime)(int serverport, char *clientip, uint8 dcuid, uint16 date, uint16 time, int delay);
 
 
-namespace Ui {
-    class SDkform;
-} // namespace Ui
 
 
 class EVentthred;
-class SDkcontrol : public QWidget
+class SDkcontrol: public QObject
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    explicit SDkcontrol(QWidget *parent = 0);
+    explicit SDkcontrol();
 
     void init();
 
@@ -50,24 +48,10 @@ private:
 
 
 
-public slots:
 
-#if 0
-	void databaseInit();
-    void on_btn_add_clicked();
-    void on_btn_delete_clicked();
-    void on_btn_modify_clicked();
-    void clickItemSlot(int row, int column);
-#endif
-
-    //
-    void textEditUiSlot(QString text);
 
 
 private:
-
-    Ui::SDkform *ui;
-
 
     QMap<QString, int> m_controlInfoMap;
 
@@ -75,7 +59,7 @@ private:
 
     QSqlDatabase m_dataBase;
 
-
+	EVentthred *m_pEventThred;
 
 };
 

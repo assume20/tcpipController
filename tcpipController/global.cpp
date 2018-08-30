@@ -12,6 +12,8 @@ int g_TRYLOCKTIME = 1000 * 6;
 QFile g_sucFile("sqlsuccess.txt");
 
 
-QMap<QString, int> g_preCardDooraddrMap;
+QVector<QPair<QString, int>> g_controlInfoVec;
+
+//QMap<QString, int> g_preCardDooraddrMap;
 
 //QMap<QString, QVector<IPdoor>> g_ipDoorMap;

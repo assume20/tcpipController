@@ -152,7 +152,11 @@ LONG MiniDumper::WriteMiniDump(_EXCEPTION_POINTERS *pExceptionInfo )
 	if (szResult && !m_bHeadless)
 		::MessageBox( NULL, szResult, NULL, MB_OK );
 
-	TerminateProcess(GetCurrentProcess(), 0);
+
+	/*
+	*¹Ø±Õ½ø³Ì
+	*/
+	//TerminateProcess(GetCurrentProcess(), 0);
 	
 	// MLM Note: ExitThread will work, and it allows the MiniDumper to kill a crashed thread
 	// without affecting the rest of the application. The question of the day:

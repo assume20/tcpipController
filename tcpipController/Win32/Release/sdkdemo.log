@@ -1,2 +1,22 @@
-﻿  eventthred.cpp
-  sdkdemo.vcxproj -> E:\githubfile\tcpipController\tcpipController\release\doorcontrol.exe
+﻿生成启动时间为 2018/8/30 21:45:44。
+     1>项目“G:\tcpipController\tcpipController noThread2018081701_27\tcpipController noThread\tcpipController\sdkdemo.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         G:\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /I.\GeneratedFiles\Release /I.\GeneratedFiles /I. /Iinclude /I..\glog\src\windows /I..\glog\src /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include\QtWidgets /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include\QtGui /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include\QtANGLE /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include\QtSql /IG:\Qt\Qt5.7.1_x86\5.7\msvc2015\include\QtCore /Irelease /I"G:\Qt\Qt5.7.1_x86\5.7\msvc2015\mkspecs\win32-msvc2015" /Zi /nologo /W3 /WX- /MP /Od /Oy- /D _CONSOLE /D UNICODE /D WIN32 /D GOOGLE_GLOG_DLL_DECL= /D GLOG_NO_ABBREVIATED_SEVERITIES /D QT_NO_DEBUG /D QT_WIDGETS_LIB /D QT_GUI_LIB /D QT_SQL_LIB /D QT_CORE_LIB /D NDEBUG /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /GR /Fo"Win32\Release\\" /Fd"Win32\Release\vc140.pdb" /Gd /TP /wd4577 /wd4467 /analyze- /errorReport:prompt -Zc:strictStrings -Zc:throwingNew -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 eventthred.cpp
+         eventthred.cpp
+     1>C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(1544): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+     1>C:\Program Files (x86)\Windows Kits\8.1\Include\um\dbghelp.h(3190): warning C4091: “typedef ”: 没有声明变量时忽略“”的左侧
+       Link:
+         G:\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"release\\doorcontrol.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:G:\Qt\Qt5.7.1_x86\5.7\msvc2015\lib /LIBPATH:.\lib /LIBPATH:..\glog\lib .\lib\libmysql_32.lib glog_32.lib G:\Qt\Qt5.7.1_x86\5.7\msvc2015\lib\Qt5Widgets.lib G:\Qt\Qt5.7.1_x86\5.7\msvc2015\lib\Qt5Gui.lib G:\Qt\Qt5.7.1_x86\5.7\msvc2015\lib\Qt5Sql.lib G:\Qt\Qt5.7.1_x86\5.7\msvc2015\lib\Qt5Core.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"release\doorcontrol.pdb" /SUBSYSTEM:CONSOLE /STACK:"104857600" /TLBID:1 /DYNAMICBASE /NXCOMPAT /MACHINE:X86 /SAFESEH "/MANIFESTDEPENDENCY:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' publicKeyToken='6595b64144ccf1df' language='*' processorArchitecture='*'" Win32\Release\MiniDump.obj
+         Win32\Release\eventthred.obj
+         Win32\Release\global.obj
+         Win32\Release\gloghelper.obj
+         Win32\Release\main.obj
+         Win32\Release\sdkcontrol.obj
+         Win32\Release\moc_eventthred.obj
+         Win32\Release\moc_sdkcontrol.obj
+         sdkdemo.vcxproj -> G:\tcpipController\tcpipController noThread2018081701_27\tcpipController noThread\tcpipController\release\doorcontrol.exe
+     1>已完成生成项目“G:\tcpipController\tcpipController noThread2018081701_27\tcpipController noThread\tcpipController\sdkdemo.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:02.90

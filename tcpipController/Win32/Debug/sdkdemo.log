@@ -1,2 +1,9 @@
-﻿  eventthred.cpp
-  sdkdemo.vcxproj -> E:\githubfile\tcpipController\tcpipController\debug\doorcontrol.exe
+﻿生成启动时间为 2018/8/16 20:19:21。
+     1>项目“C:\Users\123\Desktop\tcpipController noThread\tcpipController\sdkdemo.vcxproj”在节点 2 上(Build 个目标)。
+     1>Link:
+         sdkdemo.vcxproj -> C:\Users\123\Desktop\tcpipController noThread\tcpipController\debug\doorcontrol.exe
+     1>已完成生成项目“C:\Users\123\Desktop\tcpipController noThread\tcpipController\sdkdemo.vcxproj”(Build 个目标)的操作。
+
+已成功生成。
+
+已用时间 00:00:00.07

@@ -77,7 +77,7 @@
 #include <string>
 
 #if defined(OS_WINDOWS)
-# include "port.h"
+#include "port.h"
 #endif
 
 #include "config.h"
@@ -174,6 +174,9 @@ WallTime WallTime_Now();
 
 int32 GetMainThreadPid();
 bool PidHasChanged();
+
+//add to 2018.8.9
+bool DayHasChanged();
 
 pid_t GetTID();
 
