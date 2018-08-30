@@ -1,0 +1,6 @@
+Log file created at: 2018/08/15 23:09:16
+Running on machine: DESKTOP-NHST9NG
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0815 23:09:16.201061 17004 main.cpp:33] --------------------doorController start!--------------------
+E0815 23:09:16.254741 17004 eventthred.cpp:35] load dll fail!
+I0815 23:09:18.563956  9420 eventthred.cpp:357] load t_gethisevent address fail!

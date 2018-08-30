@@ -1,0 +1,87 @@
+Log file created at: 2018/08/17 01:06:20
+Running on machine: DESKTOP-NHST9NG
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0817 01:06:20.202601 15376 eventthred.cpp:325] 192.168.70.10 时间：2018年8月17日 1:05:50，点地址：4，卡号：3-12
+MySQL server has gone away
+E0817 01:06:20.204555 15376 eventthred.cpp:325] 192.168.70.10 时间：2018年8月17日 1:06:10，点地址：1，卡号：3-2
+MySQL server has gone away
+E0817 01:06:20.366595 15376 eventthred.cpp:325] 192.168.70.20 时间：2018年8月17日 1:06:10，点地址：1，卡号：7-11
+MySQL server has gone away
+E0817 01:06:20.368546 15376 eventthred.cpp:325] 192.168.70.20 时间：2018年8月17日 1:06:12，点地址：2，卡号：7-1
+MySQL server has gone away
+E0817 01:06:20.436867 15376 eventthred.cpp:325] 192.168.70.21 时间：2018年8月17日 1:04:24，点地址：1，卡号：7-2
+MySQL server has gone away
+E0817 01:06:20.437817 15376 eventthred.cpp:325] 192.168.70.21 时间：2018年8月17日 1:04:36，点地址：3，卡号：7-12
+MySQL server has gone away
+E0817 01:06:20.439769 15376 eventthred.cpp:325] 192.168.70.21 时间：2018年8月17日 1:05:12，点地址：4，卡号：7-12
+MySQL server has gone away
+E0817 01:06:20.443673 15376 eventthred.cpp:325] 192.168.70.21 时间：2018年8月17日 1:05:38，点地址：4，卡号：7-2
+MySQL server has gone away
+E0817 01:06:20.444648 15376 eventthred.cpp:325] 192.168.70.21 时间：2018年8月17日 1:06:08，点地址：1，卡号：7-12
+MySQL server has gone away
+E0817 01:06:20.556529 15376 eventthred.cpp:325] 192.168.70.23 时间：2018年8月17日 1:05:40，点地址：2，卡号：8-1
+MySQL server has gone away
+E0817 01:06:20.557507 15376 eventthred.cpp:325] 192.168.70.23 时间：2018年8月17日 1:05:54，点地址：1，卡号：8-11
+MySQL server has gone away
+E0817 01:06:20.618023 15376 eventthred.cpp:325] 192.168.70.24 时间：2018年8月17日 1:05:00，点地址：2，卡号：8-15
+MySQL server has gone away
+E0817 01:06:20.619971 15376 eventthred.cpp:325] 192.168.70.24 时间：2018年8月17日 1:05:08，点地址：1，卡号：8-5
+MySQL server has gone away
+E0817 01:06:20.679103 15376 eventthred.cpp:325] 192.168.70.25 时间：2018年8月17日 1:05:08，点地址：3，卡号：9-14
+MySQL server has gone away
+E0817 01:06:20.680078 15376 eventthred.cpp:325] 192.168.70.25 时间：2018年8月17日 1:05:10，点地址：4，卡号：9-4
+MySQL server has gone away
+E0817 01:06:20.682031 15376 eventthred.cpp:325] 192.168.70.25 时间：2018年8月17日 1:05:44，点地址：2，卡号：9-12
+MySQL server has gone away
+E0817 01:06:20.683007 15376 eventthred.cpp:325] 192.168.70.25 时间：2018年8月17日 1:06:18，点地址：1，卡号：9-2
+MySQL server has gone away
+E0817 01:06:20.745980 15376 eventthred.cpp:325] 192.168.70.26 时间：2018年8月17日 1:05:14，点地址：1，卡号：9-11
+MySQL server has gone away
+E0817 01:06:20.747931 15376 eventthred.cpp:325] 192.168.70.26 时间：2018年8月17日 1:05:24，点地址：2，卡号：9-1
+MySQL server has gone away
+E0817 01:06:20.749883 15376 eventthred.cpp:325] 192.168.70.26 时间：2018年8月17日 1:05:32，点地址：4，卡号：9-3
+MySQL server has gone away
+E0817 01:06:20.753801 15376 eventthred.cpp:325] 192.168.70.26 时间：2018年8月17日 1:05:50，点地址：3，卡号：9-13
+MySQL server has gone away
+E0817 01:06:20.813390 15376 eventthred.cpp:325] 192.168.70.27 时间：2018年8月17日 1:05:56，点地址：2，卡号：9-5
+MySQL server has gone away
+E0817 01:06:20.815347 15376 eventthred.cpp:325] 192.168.70.27 时间：2018年8月17日 1:06:00，点地址：1，卡号：9-15
+MySQL server has gone away
+E0817 01:06:21.130834 15376 eventthred.cpp:325] 192.168.70.31 时间：2018年8月17日 1:05:20，点地址：2，卡号：11-12
+MySQL server has gone away
+E0817 01:06:21.132784 15376 eventthred.cpp:325] 192.168.70.31 时间：2018年8月17日 1:05:58，点地址：1，卡号：11-2
+MySQL server has gone away
+E0817 01:06:21.245023 15376 eventthred.cpp:325] 192.168.70.33 时间：2018年8月17日 1:04:30，点地址：2，卡号：11-15
+MySQL server has gone away
+E0817 01:06:21.246976 15376 eventthred.cpp:325] 192.168.70.33 时间：2018年8月17日 1:04:42，点地址：1，卡号：11-5
+MySQL server has gone away
+E0817 01:06:21.371904 15376 eventthred.cpp:325] 192.168.70.35 时间：2018年8月17日 1:04:26，点地址：4，卡号：12-2
+MySQL server has gone away
+E0817 01:06:21.373883 15376 eventthred.cpp:325] 192.168.70.35 时间：2018年8月17日 1:05:06，点地址：2，卡号：12-1
+MySQL server has gone away
+E0817 01:06:21.375809 15376 eventthred.cpp:325] 192.168.70.35 时间：2018年8月17日 1:05:14，点地址：1，卡号：12-11
+MySQL server has gone away
+E0817 01:06:21.434373 15376 eventthred.cpp:325] 192.168.70.36 时间：2018年8月17日 1:05:08，点地址：3，卡号：12-14
+MySQL server has gone away
+E0817 01:06:21.494881 15376 eventthred.cpp:325] 192.168.70.12 时间：2018年8月17日 1:05:24，点地址：1，卡号：4-12
+MySQL server has gone away
+E0817 01:06:21.495857 15376 eventthred.cpp:325] 192.168.70.12 时间：2018年8月17日 1:05:26，点地址：2，卡号：4-2
+MySQL server has gone away
+E0817 01:06:21.606143 15376 eventthred.cpp:325] 192.168.70.38 时间：2018年8月17日 1:05:48，点地址：4，卡号：13-3
+MySQL server has gone away
+E0817 01:06:21.775017 15376 eventthred.cpp:325] 192.168.70.40 时间：2018年8月17日 1:05:06，点地址：1，卡号：14-15
+MySQL server has gone away
+E0817 01:06:21.776963 15376 eventthred.cpp:325] 192.168.70.40 时间：2018年8月17日 1:05:44，点地址：2，卡号：14-5
+MySQL server has gone away
+E0817 01:06:21.888232 15376 eventthred.cpp:325] 192.168.70.42 时间：2018年8月17日 1:04:24，点地址：3，卡号：14-17
+MySQL server has gone away
+E0817 01:06:21.890159 15376 eventthred.cpp:325] 192.168.70.42 时间：2018年8月17日 1:04:24，点地址：1，卡号：0-0
+MySQL server has gone away
+E0817 01:06:22.000448 15376 eventthred.cpp:325] 192.168.70.5 时间：2018年8月17日 1:04:36，点地址：2，卡号：2-2
+MySQL server has gone away
+E0817 01:06:22.002429 15376 eventthred.cpp:325] 192.168.70.5 时间：2018年8月17日 1:04:40，点地址：1，卡号：2-12
+MySQL server has gone away
+E0817 01:06:22.061936 15376 eventthred.cpp:325] 192.168.70.6 时间：2018年8月17日 1:05:30，点地址：2，卡号：2-3
+MySQL server has gone away
+E0817 01:06:22.062911 15376 eventthred.cpp:325] 192.168.70.6 时间：2018年8月17日 1:05:36，点地址：1，卡号：2-13
+MySQL server has gone away

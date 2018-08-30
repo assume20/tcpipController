@@ -1,0 +1,5 @@
+Log file created at: 2018/08/17 01:17:16
+Running on machine: DESKTOP-NHST9NG
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0817 01:17:16.046819  7604 eventthred.cpp:326] 192.168.70.36 时间：2018年8月17日 1:17:04，点地址：1，卡号：12-3
+Unknown MySQL server host '127.0.0.1' (0)

@@ -1,0 +1,13 @@
+Log file created at: 2018/08/17 01:01:46
+Running on machine: DESKTOP-NHST9NG
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0817 01:01:46.024309  8904 eventthred.cpp:327] 192.168.70.37 时间：2018年8月17日 1:01:38，点地址：3，卡号：13-4
+Unknown MySQL server host '10.43.72.223' (0)
+E0817 01:01:46.027215  8904 eventthred.cpp:327] 192.168.70.37 时间：2018年8月17日 1:01:42，点地址：3，卡号：13-14
+Unknown MySQL server host '10.43.72.223' (0)
+E0817 01:01:50.000394  8904 eventthred.cpp:327] 192.168.70.23 时间：2018年8月17日 1:01:48，点地址：1，卡号：8-11
+Unknown MySQL server host '10.43.72.223' (0)
+E0817 01:01:52.716337  8904 eventthred.cpp:327] 192.168.70.1 时间：2018年8月17日 1:01:52，点地址：2，卡号：1-2
+Unknown MySQL server host '10.43.72.223' (0)
+E0817 01:01:55.881662  8904 eventthred.cpp:327] 192.168.70.21 时间：2018年8月17日 1:01:54，点地址：4，卡号：7-12
+Unknown MySQL server host '10.43.72.223' (0)

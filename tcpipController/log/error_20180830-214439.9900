@@ -1,0 +1,9 @@
+Log file created at: 2018/08/30 21:44:39
+Running on machine: DESKTOP-NHST9NG
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E0830 21:44:39.200266 16672 eventthred.cpp:320] 192.168.70.1 时间：2000年1月1日 0:00:00，点地址：0，卡号：0-0
+MySQL server has gone away
+E0830 21:45:00.397877 16672 eventthred.cpp:320] 192.168.70.1 时间：2000年1月1日 0:00:00，点地址：0，卡号：0-0
+MySQL server has gone away
+E0830 21:45:21.512465 16672 eventthred.cpp:320] 192.168.70.1 时间：2000年1月1日 0:00:00，点地址：0，卡号：0-0
+MySQL server has gone away
