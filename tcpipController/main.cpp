@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 		if (e == 777)
 		{
 
-			QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+			//QProcess::startDetached(qApp->applicationFilePath(), QStringList());
 
 			return 0;
 
