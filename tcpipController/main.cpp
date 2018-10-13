@@ -35,14 +35,14 @@ int main(int argc, char *argv[])
 		SDkcontrol win;
 
 		int e = app.exec();
-		if (e == 777)
-		{
+		//if (e == 777)
+		//{
 
 			//QProcess::startDetached(qApp->applicationFilePath(), QStringList());
 
-			return 0;
+			//return 0;
 
-		}
+		//}
 		return e;
 	//}
 }

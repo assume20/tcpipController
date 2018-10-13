@@ -42,6 +42,8 @@ private:
 
 	void tryExceptCall();
 
+	void writeLogCollapse();
+
 
 public slots:
 	void updateControlTime();
