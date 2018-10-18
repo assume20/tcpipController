@@ -56,8 +56,8 @@ EVentthred::~EVentthred()
 	mysql_close(m_pConn);
 
 	m_bIsRunning = false;
-	this->quit();
-	this->wait(300);
+	//this->quit();
+	//this->wait(300);
 }
 
 void EVentthred::databaseInit()
@@ -324,7 +324,7 @@ void EVentthred::collectCardData()
 						*/
 						mysql_close(m_pConn);
 						mysql_library_end();
-						msleep(100);
+						QThread::msleep(100);
 						databaseInit();
 
 					}
@@ -355,7 +355,7 @@ void EVentthred::collectCardData()
 
 void EVentthred::writeLogCollapse()
 {
-	msleep(100);
+	QThread::msleep(100);
 	LOG(ERROR) << "----------doorcontrol collapse-------------" << "\n";
 	exit(-1);
 }
@@ -377,7 +377,7 @@ void EVentthred::tryExceptCall()
 }
 
 
-void EVentthred::run()
+void EVentthred::start()
 {
 	Gethisevent = (pGethisevent)m_myDll->resolve("t_gethisevent");
 	if (Gethisevent == NULL)

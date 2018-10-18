@@ -16,7 +16,7 @@ typedef int (__stdcall *pGethisevent)(int serverport, char *clientip, uint8 dcui
 
 
 
-class EVentthred: public QThread
+class EVentthred: public QObject
 {
     Q_OBJECT
 public:
@@ -27,9 +27,9 @@ public:
 
     void evtStrInit();
 
-protected:
+//protected:
 
-    void run();
+    void start();
 
 private:
 //    void databaseInit();
